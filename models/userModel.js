@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 
     email:{
         type:String,
-        required:true,
+        required:false,
         unique:true
     },
 
@@ -25,6 +25,6 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-const UserModel = mongoose.model('User',userSchema)
+const UserModel = mongoose.model('User_2',userSchema)
 
 module.exports = UserModel

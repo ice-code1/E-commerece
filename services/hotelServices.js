@@ -23,7 +23,7 @@ class HotelService{
     //get all rooms
 
  async findAll(filter){
-    return await BookModel.find(filter)
+    return await HotelModel.find(filter)
     }
 }
 

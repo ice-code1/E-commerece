@@ -12,7 +12,7 @@ const Hotel = new mongoose.Schema(
         room_type:{
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            enum:[USER_TYPES.USER,USER_TYPES.AGENT],
+            enum:['user',constants.USER_TYPES.AGENT],
         },
 
         price:{

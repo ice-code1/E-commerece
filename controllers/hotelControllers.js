@@ -1,4 +1,4 @@
-const HotelService = require('../services/hotelServices')
+const HotelRoomService = require('../services/hotelServices')
 
 class HotelController{
     //create a room
@@ -104,11 +104,11 @@ class HotelController{
         })
     }
     async fetchMany(req,res){
-        const fetchedHotelRoom = await HotelRoomService.findAll({})
+        const fetchedHotelRoom = await HotelRoomService.findAll( {} )
 
         res.status(200).json({
             success:true,
-            message:"Book fetched Successfully",
+            message:"Hotel Rooms fetched Successfully",
             data:fetchedHotelRoom
         })
     }

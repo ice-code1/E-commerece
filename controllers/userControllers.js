@@ -1,29 +1,36 @@
 const  UserServices = require('../services/userServices')
-const bcrypt =require('bcrypt')
+const bcrypt =require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const UserModel = require('../models/userModel')
-const { fetchOne } = require('../services/hotelServices')
+const hotelServices = require('../services/hotelServices')
 const userServices = require('../services/userServices')
-
+//const userServices = require('../services/userServices')
+require('dotenv').config()
 
 class UserController{
     async userRegistration(req,res){
-            const {username,email,password} = req.body
-            const hashPassword = await bcrypt.hash(password,10) 
-            const newUser = new UserModel({username, email, password:hashPassword})
-            await newUser.save()
-            res.status(201).json({message:" user registered successfully" })
+            const newUser = await UserServices.fetchOne({
+                password: await bcrypt.hash(req.body.password,10)
+            })
 
-            if(!newUser) res.status(500).json({
+            const NewUser = await UserServices.create(req.body)
+            await NewUser.save()
+            res.status(201).json({
+                success: true,
+                message:" user registered successfully",
+                data: NewUser
+             })
+
+            if(!NewUser) res.status(500).json({
                 success:false,
-                message:' invalid user'
+                message:' invalid user',
             })
         
     }
 
     async userLogin(req,res){
-        const {email, password} = req.body
-        const user = await UserModel.fetchOne({email})
+        const {username,password} = req.body
+        const user = await userServices.fetchOne({username:username})
         if(!user){
             return res.status(401).json({
                 message:"Invalid credentials"
@@ -39,7 +46,14 @@ class UserController{
             {userId:user._id},
             'secret',
             {expiresIn:'1hr'})
-            res.status(200).json({token})
+        
+        res.status(200).json({
+            success:true,
+            message: "user login successfully",
+            data: user, 
+            token
+        })
+        
     }
 
     async fetchUser(req,res){
@@ -56,17 +70,22 @@ class UserController{
         if(!updatedUser){
             return res.status(404).json({message:'user not found'})
         }
-        res.status(200).json({message:'user updated successfully'})
+        res.status(200).json({
+            success:true,
+            message:'user updated successfully',
+            data: updatedUser
+        })
     }
 
     async deleteUser(req,res){
-        const deletedUser = userServices.delete()
+        const deletedUser = UserServices.delete()
         if(!deletedUser){
             return res.status(404).json({message:'user not found'})
         }
         res.status(200).json({
             message:'User deleted successfully',
-            user:deletedUser
+            user:deletedUser,
+            data:deletedUser
         })
     }
 }
