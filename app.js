@@ -2,7 +2,7 @@ const express = require('express')
 
 const app = express()
 const userRoutes = require('./routes/user.route')
-const hotelRoutes = require('./routes/hotel.route')
+const orderRoutes = require('./routes/order.route')
 const router = require('./routes/index.route')
 const mongoose = require('mongoose')
 
@@ -13,7 +13,7 @@ app.use(express.json())
 
 app.use('/api/users',userRoutes)
 
-app.use('/api/hotel',hotelRoutes)
+app.use('/api/hotel',orderRoutes)
 app.use('/api/v3',router)
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {

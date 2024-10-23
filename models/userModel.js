@@ -22,7 +22,21 @@ const userSchema = new mongoose.Schema({
         type:String,
         enum:['guest','admin'],
         default:'guest'
+    },
+
+    customerInformation:{
+        type:string,
+        required: true
+    },
+
+    orderItems:{
+        type:string
+    },
+
+    shippingAddress:{
+        type:string
     }
+
 })
 
 const UserModel = mongoose.model('User_2',userSchema)

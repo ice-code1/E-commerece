@@ -1,23 +1,37 @@
 const mongoose = require('mongoose')
-const constants = require("../constants/hotelConstants")
+const constants = require("../constants/orderConstants")
 const {USER_TYPES, DATABASE} = constants
 
-const Hotel = new mongoose.Schema(
+const Order = new mongoose.Schema(
     {
         name:{
             type:String,
             required:true,
         },
 
-        room_type:{
+        item_type:{
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             enum:['user',constants.USER_TYPES.AGENT],
         },
 
+        description:{
+            type:String
+        },
+
         price:{
             type:Number,
             required: true,
+        },
+
+        quantity:{
+            type:Number
+        },
+
+        image:{
+            type:string,
+            data: Buffer,
+            contentType:String
         }
 
     },
@@ -26,5 +40,5 @@ const Hotel = new mongoose.Schema(
     }
 )
 
-const HotelModel1 = mongoose.model('Hotel', Hotel )
-module.exports = HotelModel1
+const OrderModel1 = mongoose.model('Order', Order )
+module.exports = OrderModel1

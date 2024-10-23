@@ -2,8 +2,9 @@ const  UserServices = require('../services/userServices')
 const bcrypt =require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const UserModel = require('../models/userModel')
-const hotelServices = require('../services/hotelServices')
+const OrderModel = require('../models/orderModels')
 const userServices = require('../services/userServices')
+const orderServices = require('../services/orderServices')
 //const userServices = require('../services/userServices')
 require('dotenv').config()
 
@@ -88,6 +89,46 @@ class UserController{
             data:deletedUser
         })
     }
+
+    async orderCreation(req,res){
+
+        const NewOrder = await orderServices.create(req.body)
+        await NewOrder.save()
+        res.status(201).json({
+            success: true,
+            message:" order created successfully",
+            data: NewOrder
+         })
+
+        if(!NewOrder) res.status(500).json({
+            success:false,
+            message:' invalid order',
+        })
+    
+    }
+
+    async updateOrder(req,res){
+        const updatedOrder = await OrderModel.findByIdAndUpdate(req.params.id,req.body,{new:true})
+        if(!updatedOrder){
+            return res.status(404).json({message:'order not found'})
+        }
+        res.status(200).json({
+            success:true,
+            message:'order updated successfully',
+            data: updatedOrder
+        })
+    }
+
+    async viewOrder(req,res){
+        const order = await OrderModelModel.findById(req.params.id)
+        if(!order){
+            return res.status(404).json({message:'order not found'})
+        }
+        res.status(200).json(order)
+
+    }
+
+    
 }
 
 module.exports = new UserController()

@@ -2,7 +2,7 @@ const constants = {
     DATABASE_URI: process.env.DATABASE_URI,
 
     DATABASE: {
-        ROOM: "room",
+        ITEM: "item",
     },
 
     USER_TYPES: {
